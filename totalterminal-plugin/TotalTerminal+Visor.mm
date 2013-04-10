@@ -220,10 +220,8 @@
 -(void) SMETHOD (TTWindowController, tabView):(id)arg1 didCloseTabViewItem:(id)arg2 {
   AUTO_LOGGER();
   [self SMETHOD (TTWindowController, tabView):arg1 didCloseTabViewItem:arg2];
-  if ([(TTWindowController*) self numberOfTabs] == 1) {
-    TotalTerminal* totalTerminal = [TotalTerminal sharedInstance];
-    BOOL isVisorWindow = [totalTerminal isVisorWindow:[self window]];
-    if (isVisorWindow) [totalTerminal applyVisorPositioning];
+  if ([[TotalTerminal sharedInstance] isVisorWindow:[self window]] && ([(TTWindowController*)self numberOfTabs] == 1)) {
+    [[TotalTerminal sharedInstance] applyVisorPositioning];
   }
 }
 
@@ -234,20 +232,18 @@
 // Both [TTWindowController close/splitActivePane:] and [TTPane close/splitPressed:] call these methods
 -(void) SMETHOD (TTTabController, closePane):(id)arg1 {
   AUTO_LOGGER();
-  [(TTTabController*) self SMETHOD(TTTabController, closePane):arg1];
-  TTWindowController* winc = [(TTTabController*) self windowController];
+  [self SMETHOD(TTTabController, closePane):arg1];
   TotalTerminal* totalTerminal = [TotalTerminal sharedInstance];
-  if ([totalTerminal isVisorWindow:[winc window]]) {
+  if ([totalTerminal isVisorWindow:[[(TTTabController*)self windowController] window]]) {
     [totalTerminal applyVisorPositioning];
   }
 }
 
 -(void) SMETHOD (TTTabController, splitPane):(id)arg1 {
   AUTO_LOGGER();
-  [(TTTabController*) self SMETHOD(TTTabController, splitPane):arg1];
-  TTWindowController* winc = [(TTTabController*) self windowController];
+  [self SMETHOD(TTTabController, splitPane):arg1];
   TotalTerminal* totalTerminal = [TotalTerminal sharedInstance];
-  if ([totalTerminal isVisorWindow:[winc window]]) {
+  if ([totalTerminal isVisorWindow:[[(TTTabController*)self windowController] window]]) {
     [totalTerminal applyVisorPositioning];
   }
 }
