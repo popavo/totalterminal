@@ -83,6 +83,7 @@
   inactiveIcon_ = [[NSImage alloc] initWithContentsOfFile:[[NSBundle bundleForClass:[self classForCoder]] pathForImageResource:@"VisorInactive"]];
 
   previouslyActiveAppPID_ = 0;
+  isFrontmost_ = false;
   isHidden_ = true;
   isMain_ = false;
   isKey_ = false;
@@ -117,7 +118,16 @@
 
   [[NSDistributedNotificationCenter defaultCenter] addObserver:self selector:@selector(inputSourceChanged) name:(NSString*)kTISNotifySelectedKeyboardInputSourceChanged object:nil];
 
-  universalTimer_ = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(universalTimerFired:) userInfo:nil repeats:YES];
+  SInt32 minorVersion = 0;
+  Gestalt(gestaltSystemVersionMinor, &minorVersion);
+  if (minorVersion >= 7) {
+    [[NSWorkspace sharedWorkspace] addObserver:self
+                                    forKeyPath:@"frontmostApplication"
+                                       options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld
+                                       context:nil];
+  } else {
+    universalTimer_ = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(universalTimerFired:) userInfo:nil repeats:YES];
+  }
 
   return self;
 }

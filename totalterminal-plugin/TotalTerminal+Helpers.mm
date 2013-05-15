@@ -81,6 +81,16 @@
   }
 }
 
+-(void) setPreviouslyActiveApp:(NSRunningApplication*)previouslyActiveApp activeApp:(NSRunningApplication*)activeApp {
+  if ([[activeApp bundleIdentifier] isEqualToString:@"com.apple.Terminal"]) {
+    isFrontmost_ = YES;
+    previouslyActiveAppPID_ = [previouslyActiveApp processIdentifier];
+  } else {
+    isFrontmost_ = NO;
+    previouslyActiveAppPID_ = 0;
+  }
+}
+
 -(void) restorePreviouslyActiveApp {
   AUTO_LOGGERF(@"pid=%d", previouslyActiveAppPID_);
   if (!previouslyActiveAppPID_) {

@@ -100,6 +100,9 @@
       }
     }
   }
+  if ([keyPath isEqualToString:@"frontmostApplication"]) {
+    [self setPreviouslyActiveApp:[change objectForKey:NSKeyValueChangeOldKey] activeApp:[change objectForKey:NSKeyValueChangeNewKey]];
+  }
 
   [self updateMainMenuState];
   [self updateStatusMenu];

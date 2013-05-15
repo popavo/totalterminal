@@ -9,6 +9,7 @@
 -(bool)isCurrentylyActive;
 -(void)storePreviouslyActiveApp;
 -(void)updatePreviouslyActiveApp;
+-(void)setPreviouslyActiveApp:(NSRunningApplication*)previouslyActiveApp activeApp:(NSRunningApplication*)activeApp;
 -(void)restorePreviouslyActiveApp;
 
 @end

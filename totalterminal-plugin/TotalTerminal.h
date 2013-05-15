@@ -23,6 +23,7 @@
   NSUInteger hotModifiersState_;
   NSTimeInterval lastHotModifiersEventCheckedTime_;
   int previouslyActiveAppPID_;
+  BOOL isFrontmost_;
   BOOL isHidden_;
   BOOL isMain_;
   BOOL isKey_;
