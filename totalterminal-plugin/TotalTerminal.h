@@ -41,6 +41,8 @@
   NSImage* alternativeDockIcon;
   BOOL preventShortcutUpdates_;
   NSTimer* universalTimer_;
+  BOOL isReceivingDrag_;
+  BOOL didReceiveDrag_;
 }
 
 +(TotalTerminal*)sharedInstance;

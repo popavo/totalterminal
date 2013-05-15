@@ -164,8 +164,7 @@
 }
 
 // LION: this is variant of the ^^^
--(id) SMETHOD (TTWindowController, newTabWithProfile):(id)arg1 customFont:(id)arg2 command:(id)arg3 runAsShell:(BOOL)arg4 restorable:(BOOL)arg5 workingDirectory:(id)arg6 sessionClass:(id)arg7
- restoreSession                                      :(id)arg8 {
+-(id) SMETHOD (TTWindowController, newTabWithProfile):(id)arg1 customFont:(id)arg2 command:(id)arg3 runAsShell:(BOOL)arg4 restorable:(BOOL)arg5 workingDirectory:(id)arg6 sessionClass:(id)arg7 restoreSession:(id)arg8 {
   id profile = [self SMETHOD (TTWindowController, forceVisorProfileIfVisoredWindow)]; // returns nil if not Visor-ed window
 
   AUTO_LOGGERF(@"profile=%@", profile);
@@ -198,8 +197,7 @@
   return tab;
 }
 
--(id) SMETHOD (TTWindowController,
-               makeTabWithProfile):(id)arg1 customFont:(id)arg2 command:(id)arg3 runAsShell:(BOOL)arg4 restorable:(BOOL)arg5 workingDirectory:(id)arg6 sessionClass:(id)arg7 restoreSession:(id)arg8 {
+-(id) SMETHOD (TTWindowController, makeTabWithProfile):(id)arg1 customFont:(id)arg2 command:(id)arg3 runAsShell:(BOOL)arg4 restorable:(BOOL)arg5 workingDirectory:(id)arg6 sessionClass:(id)arg7 restoreSession:(id)arg8 {
   id profile = [self SMETHOD (TTWindowController, forceVisorProfileIfVisoredWindow)]; // returns nil if not Visor-ed window
 
   AUTO_LOGGERF(@"profile=%@", profile);
@@ -254,21 +252,101 @@
 
 -(void) SMETHOD (TTApplication, sendEvent):(NSEvent*)theEvent {
   NSUInteger type = [theEvent type];
-
+  TotalTerminal* totalTerminal = [TotalTerminal sharedInstance];
   if (type == NSFlagsChanged) {
-    TotalTerminal* totalTerminal = [TotalTerminal sharedInstance];
     [totalTerminal modifiersChangedWhileActive:theEvent];
   } else if ((type == NSKeyDown) || (type == NSKeyUp)) {
-    TotalTerminal* totalTerminal = [TotalTerminal sharedInstance];
     [totalTerminal keysChangedWhileActive:theEvent];
   } else if (type == NSMouseMoved) {
     // TODO review this: it caused background intialization even if Quartz background was disabled in the preferences
     // => https://github.com/darwin/visor/issues/102#issuecomment-1508598
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"TotalTerminalVisorUseBackgroundAnimation"]) {
-      [[[TotalTerminal sharedInstance] background] sendEvent:theEvent];
+      [[totalTerminal background] sendEvent:theEvent];
     }
   }
   [self SMETHOD (TTApplication, sendEvent):theEvent];
+}
+
+@end
+
+@implementation NSTabView (TotalTerminal)
+
+-(NSDragOperation) SMETHOD (TTTabView, draggingEntered):(id<NSDraggingInfo>)sender {
+  AUTO_LOGGERF(@"sender=%@", sender);
+
+  TotalTerminal* totalTerminal = [TotalTerminal sharedInstance];
+  if ([totalTerminal isVisorWindow:[sender draggingDestinationWindow]]) {
+    [totalTerminal draggingEntered:sender];
+  }
+  return [self SMETHOD (TTTabView, draggingEntered):sender];
+}
+
+-(void) SMETHOD (TTTabView, draggingExited):(id<NSDraggingInfo>)sender {
+  AUTO_LOGGERF(@"sender=%@", sender);
+  TotalTerminal* totalTerminal = [TotalTerminal sharedInstance];
+  if ([totalTerminal isVisorWindow:[sender draggingDestinationWindow]]) {
+    [totalTerminal resetDragState];
+  }
+  [self SMETHOD (TTTabView, draggingExited):sender];
+}
+
+-(BOOL) SMETHOD (TTTabView, performDragOperation):(id <NSDraggingInfo>)sender {
+  AUTO_LOGGERF(@"sender=%@", sender);
+  TotalTerminal* totalTerminal = [TotalTerminal sharedInstance];
+  if ([totalTerminal isVisorWindow:[sender draggingDestinationWindow]]) {
+    [totalTerminal performDragOperation:sender];
+  }
+  return [self SMETHOD (TTTabView, performDragOperation):sender];
+}
+
+-(void) SMETHOD (TTTabView, draggingEnded):(id<NSDraggingInfo>)sender {
+  AUTO_LOGGERF(@"sender=%@", sender);
+  TotalTerminal* totalTerminal = [TotalTerminal sharedInstance];
+  if ([totalTerminal isVisorWindow:[sender draggingDestinationWindow]]) {
+    [totalTerminal resetDragState];
+  }
+  [self SMETHOD (TTTabView, draggingEnded):sender];
+}
+
+@end
+
+@implementation NSView (TotalTerminal)
+
+-(NSDragOperation) SMETHOD (TTView, draggingEntered):(id<NSDraggingInfo>)sender {
+  AUTO_LOGGERF(@"sender=%@", sender);
+  
+  TotalTerminal* totalTerminal = [TotalTerminal sharedInstance];
+  if ([totalTerminal isVisorWindow:[sender draggingDestinationWindow]]) {
+    [totalTerminal draggingEntered:sender];
+  }
+  return [self SMETHOD (TTView, draggingEntered):sender];
+}
+
+-(void) SMETHOD (TTView, draggingExited):(id<NSDraggingInfo>)sender {
+  AUTO_LOGGERF(@"sender=%@", sender);
+  TotalTerminal* totalTerminal = [TotalTerminal sharedInstance];
+  if ([totalTerminal isVisorWindow:[sender draggingDestinationWindow]]) {
+    [totalTerminal resetDragState];
+  }
+  [self SMETHOD (TTView, draggingExited):sender];
+}
+
+-(BOOL) SMETHOD (TTView, performDragOperation):(id <NSDraggingInfo>)sender {
+  AUTO_LOGGERF(@"sender=%@", sender);
+  TotalTerminal* totalTerminal = [TotalTerminal sharedInstance];
+  if ([totalTerminal isVisorWindow:[sender draggingDestinationWindow]]) {
+    [totalTerminal performDragOperation:sender];
+  }
+  return [self SMETHOD (TTView, performDragOperation):sender];
+}
+
+-(void) SMETHOD (TTView, concludeDragOperation):(id <NSDraggingInfo>)sender {
+  AUTO_LOGGERF(@"sender=%@", sender);
+  TotalTerminal* totalTerminal = [TotalTerminal sharedInstance];
+  if ([totalTerminal isVisorWindow:[sender draggingDestinationWindow]]) {
+    [totalTerminal resetDragState];
+  }
+  [self SMETHOD (TTView, concludeDragOperation):sender];
 }
 
 @end
@@ -770,22 +848,34 @@
 
 -(void) showVisor:(BOOL)fast {
   AUTO_LOGGERF(@"fast=%d isHidden=%d", fast, isHidden_);
-  if (!isHidden_) return;
+  if (!isHidden_) {
+    if (isMain_ && isKey_ && isFrontmost_) return;
+    
+    if (!isMain_ || !isKey_) {
+      [window_ makeKeyAndOrderFront:self];
+      [window_ setHasShadow:YES];
+    }
+    if (!isFrontmost_) {
+      [NSApp activateIgnoringOtherApps:YES];
+    }
+  } else {
+    isHidden_ = false;
+    [window_ makeKeyAndOrderFront:self];
+    [window_ setHasShadow:YES];
+    [NSApp activateIgnoringOtherApps:YES];
+
+    // window will become key eventually, this is important for updatePreviouslyActiveApp to work properly
+    // becomeKey event may have delay and without this updatePreviouslyActiveApp could reset PID to 0
+    // imagine: when timer fire imediately after showVisor and before becomeKey event
+    // see: https://github.com/binaryage/totalterminal/issues/35
+    isKey_ = true;
+  }
 
   [self updateStatusMenu];
-  [self storePreviouslyActiveApp];
+  //[self storePreviouslyActiveApp];
   [self applyVisorPositioning];
 
-  isHidden_ = false;
-  [window_ makeKeyAndOrderFront:self];
-  [window_ setHasShadow:YES];
-  [NSApp activateIgnoringOtherApps:YES];
-
-  // window will become key eventually, this is important for updatePreviouslyActiveApp to work properly
-  // becomeKey event may have delay and without this updatePreviouslyActiveApp could reset PID to 0
-  // imagine: when timer fire imediately after showVisor and before becomeKey event
-  // see: https://github.com/binaryage/totalterminal/issues/35
-  isKey_ = true;
+  
 
   [window_ update];
   [self slideWindows:1 fast:fast];
@@ -893,20 +983,41 @@
   return [[NSUserDefaults standardUserDefaults] boolForKey:@"TotalTerminalVisorPinned"];
 }
 
+-(void) draggingEntered:(id<NSDraggingInfo>)sender {
+  AUTO_LOGGER();
+  isReceivingDrag_ = YES;
+}
+
+-(void) performDragOperation:(id <NSDraggingInfo>)sender {
+  AUTO_LOGGER();
+  didReceiveDrag_ = YES;
+  if ((!isMain_ || !isKey_) && !isHidden_ && ![self isPinned]) {
+    [self showVisor:false];
+  }
+}
+
+-(void) resetDragState {
+  AUTO_LOGGER();
+  isReceivingDrag_ = NO;
+  didReceiveDrag_ = NO;
+}
+
 -(void) resignKey:(id)sender {
   LOG(@"resignKey %@ isMain=%d isKey=%d isHidden=%d isPinned=%d", sender, isMain_, isKey_, isHidden_, [self isPinned]);
+  LOG(@"keyWindow: %@ mainWindow: %@", [[NSApplication sharedApplication] keyWindow], [[NSApplication sharedApplication] mainWindow]);
   isKey_ = false;
   [self updateEscapeHotKeyRegistration];
   [self updateFullScreenHotKeyRegistration];
-  if (!isMain_ && !isKey_ && !isHidden_ && ![self isPinned]) {
+  if (!isMain_ && !isKey_ && !isHidden_ && ![self isPinned] && !isReceivingDrag_ && !didReceiveDrag_) {
     [self hideVisor:false];
   }
 }
 
 -(void) resignMain:(id)sender {
   LOG(@"resignMain %@ isMain=%d isKey=%d isHidden=%d isPinned=%d", sender, isMain_, isKey_, isHidden_, [self isPinned]);
+  LOG(@"keyWindow: %@ mainWindow: %@", [[NSApplication sharedApplication] keyWindow], [[NSApplication sharedApplication] mainWindow]);
   isMain_ = false;
-  if (!isMain_ && !isKey_ && !isHidden_ && ![self isPinned]) {
+  if (!isMain_ && !isKey_ && !isHidden_ && ![self isPinned] && !isReceivingDrag_ && !didReceiveDrag_) {
     [self hideVisor:false];
   }
 }
@@ -1207,13 +1318,10 @@
 }
 
 -(BOOL) isVisorWindow:(id)win {
-  return window_ == win;
+  return [window_ isEqual:win];
 }
 
-static const EventTypeSpec kModifierEventTypeSpec[] = { {
-                                                          kEventClassKeyboard, kEventRawKeyModifiersChanged
-                                                        }
-};
+static const EventTypeSpec kModifierEventTypeSpec[] = { { kEventClassKeyboard, kEventRawKeyModifiersChanged } };
 static const size_t kModifierEventTypeSpecSize = sizeof(kModifierEventTypeSpec) / sizeof(EventTypeSpec);
 
 // Allows me to intercept the "control" double tap to activate QSB. There
@@ -1232,9 +1340,7 @@ static const size_t kModifierEventTypeSpecSize = sizeof(kModifierEventTypeSpec) 
   [handler setDelegate:nil];
 }
 
--(OSStatus) gtm_eventHandler:(GTMCarbonEventHandler*)sender
-               receivedEvent:(GTMCarbonEvent*)event
-                     handler:(EventHandlerCallRef)handler {
+-(OSStatus) gtm_eventHandler:(GTMCarbonEventHandler*)sender receivedEvent:(GTMCarbonEvent*)event handler:(EventHandlerCallRef)handler {
   OSStatus status = eventNotHandledErr;
 
   if (([event eventClass] == kEventClassKeyboard) &&
@@ -1301,6 +1407,16 @@ static const size_t kModifierEventTypeSpecSize = sizeof(kModifierEventTypeSpec) 
   SWIZZLE(TTWindow, canBecomeKeyWindow);
   SWIZZLE(TTWindow, canBecomeMainWindow);
   SWIZZLE(TTWindow, performClose:);
+
+  SWIZZLE(TTTabView, draggingEntered:);
+  SWIZZLE(TTTabView, draggingExited:);
+  SWIZZLE(TTTabView, performDragOperation:);
+  SWIZZLE(TTTabView, draggingEnded:);
+  
+  SWIZZLE(TTView, draggingEntered:);
+  SWIZZLE(TTView, draggingExited:);
+  SWIZZLE(TTView, performDragOperation:);
+  SWIZZLE(TTView, concludeDragOperation:);
 
   SWIZZLE(TTApplication, sendEvent:);
 

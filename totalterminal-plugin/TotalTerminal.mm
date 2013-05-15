@@ -87,6 +87,8 @@
   isHidden_ = true;
   isMain_ = false;
   isKey_ = false;
+  isReceivingDrag_ = false;
+  didReceiveDrag_ = false;
 
   [NSBundle loadNibNamed:@"TotalTerminal" owner:self];
 

@@ -18,6 +18,10 @@
 -(void)adoptTerminal:(id)win;
 -(void)resetVisorWindowSize;
 
+-(void)draggingEntered:(id <NSDraggingInfo>)sender;
+-(void)performDragOperation:(id <NSDraggingInfo>)sender;
+-(void)resetDragState;
+
 -(void)startEventMonitoring;
 -(BOOL)isHidden;
 -(void)updateHotKeyRegistration;
