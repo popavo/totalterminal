@@ -172,6 +172,8 @@
 		D2F7E65807B2D6F200F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		D37060FB1668AF2C00E99968 /* TotalTerminal+UIElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TotalTerminal+UIElement.h"; sourceTree = "<group>"; };
 		D37060FC1668AF2C00E99968 /* TotalTerminal+UIElement.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "TotalTerminal+UIElement.mm"; sourceTree = "<group>"; };
+		D39D50A9173B3B5000E1E8D5 /* TTTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTabView.h; sourceTree = "<group>"; };
+		D39D50AA173B3B5000E1E8D5 /* TTTabViewItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTabViewItem.h; sourceTree = "<group>"; };
 		D614F0B41607C5D70045572D /* AutoLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AutoLogger.h; path = base/AutoLogger.h; sourceTree = "<group>"; };
 		D614F0B51607C5D70045572D /* AutoLogger.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AutoLogger.mm; path = base/AutoLogger.mm; sourceTree = "<group>"; };
 		D62204AD1051CC3700FAEA30 /* TotalTerminal+TerminalColours.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TotalTerminal+TerminalColours.h"; sourceTree = "<group>"; };
@@ -450,6 +452,8 @@
 				D622F35114F1B03900EF758A /* TTWindowController.h */,
 				D622F35414F1B16600EF758A /* TTApplication.h */,
 				D622F35514F1B35300EF758A /* TTTabController.h */,
+				D39D50A9173B3B5000E1E8D5 /* TTTabView.h */,
+				D39D50AA173B3B5000E1E8D5 /* TTTabViewItem.h */,
 				D622F35614F1B36F00EF758A /* TTPane.h */,
 				D622F35714F1B38A00EF758A /* TTAccessibleView.h */,
 				D622F35814F1B4AC00EF758A /* TTProfile.h */,

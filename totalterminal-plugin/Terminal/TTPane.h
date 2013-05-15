@@ -1,9 +1,10 @@
 #import "TTAccessibleView.h"
 
-@class TTView;
+@class TTTabController, TTView;
 
 @interface TTPane : TTAccessibleView { }
 
+@property (retain) TTTabController *controller;
 @property (assign) TTView* view; // @synthesize view;
 
 @end
