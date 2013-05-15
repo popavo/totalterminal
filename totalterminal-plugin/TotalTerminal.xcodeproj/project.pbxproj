@@ -170,6 +170,7 @@
 		8D5B49B6048680CD000E48DA /* TotalTerminal.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TotalTerminal.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D5B49B7048680CD000E48DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D2F7E65807B2D6F200F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
+		D3209249174407B9007DC617 /* TTWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTWindow.h; sourceTree = "<group>"; };
 		D37060FB1668AF2C00E99968 /* TotalTerminal+UIElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TotalTerminal+UIElement.h"; sourceTree = "<group>"; };
 		D37060FC1668AF2C00E99968 /* TotalTerminal+UIElement.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "TotalTerminal+UIElement.mm"; sourceTree = "<group>"; };
 		D39D50A9173B3B5000E1E8D5 /* TTTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTabView.h; sourceTree = "<group>"; };
@@ -447,17 +448,18 @@
 		D622F34E14F1AF8A00EF758A /* Terminal */ = {
 			isa = PBXGroup;
 			children = (
-				D622F34F14F1AF8A00EF758A /* TTAppPrefsController.h */,
-				D622F35014F1AFBC00EF758A /* TTProfileManager.h */,
-				D622F35114F1B03900EF758A /* TTWindowController.h */,
+				D622F35714F1B38A00EF758A /* TTAccessibleView.h */,
 				D622F35414F1B16600EF758A /* TTApplication.h */,
+				D622F34F14F1AF8A00EF758A /* TTAppPrefsController.h */,
+				D622F35614F1B36F00EF758A /* TTPane.h */,
+				D622F35814F1B4AC00EF758A /* TTProfile.h */,
+				D622F35014F1AFBC00EF758A /* TTProfileManager.h */,
 				D622F35514F1B35300EF758A /* TTTabController.h */,
 				D39D50A9173B3B5000E1E8D5 /* TTTabView.h */,
 				D39D50AA173B3B5000E1E8D5 /* TTTabViewItem.h */,
-				D622F35614F1B36F00EF758A /* TTPane.h */,
-				D622F35714F1B38A00EF758A /* TTAccessibleView.h */,
-				D622F35814F1B4AC00EF758A /* TTProfile.h */,
 				D622F35914F1B61E00EF758A /* TTView.h */,
+				D3209249174407B9007DC617 /* TTWindow.h */,
+				D622F35114F1B03900EF758A /* TTWindowController.h */,
 			);
 			path = Terminal;
 			sourceTree = "<group>";
