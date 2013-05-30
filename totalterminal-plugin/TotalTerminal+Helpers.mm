@@ -1,6 +1,7 @@
 #import "TTProfileManager.h"
 
 #import "TotalTerminal+Helpers.h"
+#import "Terminal.h"
 
 @implementation TotalTerminal (Helpers)
 
@@ -102,6 +103,25 @@
   LOG(@"  ... activating %@", app);
   [app activateWithOptions:0];
   previouslyActiveAppPID_ = 0;
+}
+
+-(void)sendVisorWindowID {
+  if (window_) {
+    NSRunningApplication* app = [NSRunningApplication currentApplication];
+    TerminalApplication* terminal = [SBApplication applicationWithProcessIdentifier:app.processIdentifier];
+    NSRect visorFrame = [window_ frame];
+
+    for (TerminalWindow* window in [terminal windows]) {
+      if (NSEqualRects(visorFrame, window.frame)) {
+        [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"TotalTerminalPostVisorWindowNumberNotification"
+                                                                       object:[NSString stringWithFormat:@"%ld", window.id]
+                                                                     userInfo:nil
+                                                           deliverImmediately:YES];
+        break;
+      }
+    }
+    
+  }
 }
 
 @end

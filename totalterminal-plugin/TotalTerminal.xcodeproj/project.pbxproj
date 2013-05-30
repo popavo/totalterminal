@@ -33,6 +33,7 @@
 		26C7384F11045EBF00E5058E /* TotalTerminal+PasteOnRightClick.mm in Sources */ = {isa = PBXBuildFile; fileRef = 26C7384E11045EBF00E5058E /* TotalTerminal+PasteOnRightClick.mm */; };
 		8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */; };
 		D37060FD1668AF2C00E99968 /* TotalTerminal+UIElement.mm in Sources */ = {isa = PBXBuildFile; fileRef = D37060FC1668AF2C00E99968 /* TotalTerminal+UIElement.mm */; };
+		D3A5B6951755B9F500D105EE /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3A5B6941755B9F500D105EE /* ScriptingBridge.framework */; };
 		D614F0B61607C5D70045572D /* AutoLogger.mm in Sources */ = {isa = PBXBuildFile; fileRef = D614F0B51607C5D70045572D /* AutoLogger.mm */; };
 		D62204AF1051CC3700FAEA30 /* TotalTerminal+TerminalColours.mm in Sources */ = {isa = PBXBuildFile; fileRef = D62204AE1051CC3700FAEA30 /* TotalTerminal+TerminalColours.mm */; };
 		D62A1D1C13E4B7F100221A33 /* Visor-Lion.terminal in Resources */ = {isa = PBXBuildFile; fileRef = D62A1D1A13E4B7F100221A33 /* Visor-Lion.terminal */; };
@@ -175,6 +176,8 @@
 		D37060FC1668AF2C00E99968 /* TotalTerminal+UIElement.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "TotalTerminal+UIElement.mm"; sourceTree = "<group>"; };
 		D39D50A9173B3B5000E1E8D5 /* TTTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTabView.h; sourceTree = "<group>"; };
 		D39D50AA173B3B5000E1E8D5 /* TTTabViewItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTabViewItem.h; sourceTree = "<group>"; };
+		D3A5B6941755B9F500D105EE /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = ../../../../../System/Library/Frameworks/ScriptingBridge.framework; sourceTree = "<group>"; };
+		D3A5B69A1755BA1900D105EE /* Terminal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Terminal.h; sourceTree = "<group>"; };
 		D614F0B41607C5D70045572D /* AutoLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AutoLogger.h; path = base/AutoLogger.h; sourceTree = "<group>"; };
 		D614F0B51607C5D70045572D /* AutoLogger.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AutoLogger.mm; path = base/AutoLogger.mm; sourceTree = "<group>"; };
 		D62204AD1051CC3700FAEA30 /* TotalTerminal+TerminalColours.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TotalTerminal+TerminalColours.h"; sourceTree = "<group>"; };
@@ -296,6 +299,7 @@
 				D648D9FA106DBF7300EA640F /* AppKit.framework in Frameworks */,
 				0708B0F612ADA36100A0F345 /* Quartz.framework in Frameworks */,
 				0708B0F812ADA36100A0F345 /* QuartzCore.framework in Frameworks */,
+				D3A5B6951755B9F500D105EE /* ScriptingBridge.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -410,6 +414,7 @@
 		1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D3A5B6941755B9F500D105EE /* ScriptingBridge.framework */,
 				7F01469F0A3E6571006AF239 /* Carbon.framework */,
 				1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */,
 				D6716ED110659A6300970560 /* WebKit.framework */,
@@ -448,6 +453,7 @@
 		D622F34E14F1AF8A00EF758A /* Terminal */ = {
 			isa = PBXGroup;
 			children = (
+				D3A5B69A1755BA1900D105EE /* Terminal.h */,
 				D622F35714F1B38A00EF758A /* TTAccessibleView.h */,
 				D622F35414F1B16600EF758A /* TTApplication.h */,
 				D622F34F14F1AF8A00EF758A /* TTAppPrefsController.h */,
