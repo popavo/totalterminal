@@ -12,6 +12,4 @@
 -(void)setPreviouslyActiveApp:(NSRunningApplication*)previouslyActiveApp activeApp:(NSRunningApplication*)activeApp;
 -(void)restorePreviouslyActiveApp;
 
--(void)sendVisorWindowID;
-
 @end

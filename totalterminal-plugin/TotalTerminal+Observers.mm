@@ -1,5 +1,4 @@
 #import "TotalTerminal+Observers.h"
-#import "Terminal.h"
 
 @implementation TotalTerminal (Observers)
 
@@ -37,12 +36,6 @@
 
   // ----------
   [[[self class] getVisorProfile] addObserver:self forKeyPath:@"BackgroundColor" options:0 context:@"UpdateBackground"];
-
-  [[NSDistributedNotificationCenter defaultCenter] addObserver:self
-                                                      selector:@selector(sendVisorWindowInfo:)
-                                                          name:@"TotalTerminalSendVisorWindowInfoNotification"
-                                                        object:nil
-                                            suspensionBehavior:NSNotificationDeliverImmediately];
 }
 
 -(void) observeValueForKeyPath:(NSString*)keyPath ofObject:(id)object change:(NSDictionary*)change context:(void*)context {
@@ -116,8 +109,5 @@
   [self updateHotKeyRegistration];
 }
 
--(void) sendVisorWindowInfo:(NSNotification*)note {
-  [self sendVisorWindowID];
-}
 
 @end

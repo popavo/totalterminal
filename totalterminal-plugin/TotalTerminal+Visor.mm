@@ -441,8 +441,6 @@
     [self updateHotKeyRegistration];
     [self updateEscapeHotKeyRegistration];
     [self updateFullScreenHotKeyRegistration];
-
-    [self sendVisorWindowID];
   } else {
     isHidden_ = YES;
     // properly unregister hotkey registrations (issue #53)
