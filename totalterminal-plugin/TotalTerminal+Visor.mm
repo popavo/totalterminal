@@ -406,6 +406,28 @@
   return [self SMETHOD (TTWindow, performClose):sender];
 }
 
+-(void) SMETHOD (TTWindow, setScriptFrontmost):(BOOL)frontmost {
+  AUTO_LOGGER();
+  TotalTerminal* totalTerminal = [TotalTerminal sharedInstance];
+  if ([[totalTerminal window] isEqual:self]) {
+    if (frontmost && [totalTerminal isHidden]) {
+      [totalTerminal showVisor:YES];
+    }
+  }
+  [self SMETHOD (TTWindow, setScriptFrontmost):frontmost];
+}
+
+-(void) SMETHOD (TTWindow, setIsVisible):(BOOL)visible {
+  AUTO_LOGGER();
+  TotalTerminal* totalTerminal = [TotalTerminal sharedInstance];
+  if ([[totalTerminal window] isEqual:self]) {
+    if (visible && [totalTerminal isHidden]) {
+      [totalTerminal showVisor:YES];
+    }
+  }
+  [self SMETHOD (TTWindow, setIsVisible):visible];
+}
+
 @end
 
 @implementation TotalTerminal (Visor)
@@ -1407,6 +1429,8 @@ static const size_t kModifierEventTypeSpecSize = sizeof(kModifierEventTypeSpec) 
   SWIZZLE(TTWindow, canBecomeKeyWindow);
   SWIZZLE(TTWindow, canBecomeMainWindow);
   SWIZZLE(TTWindow, performClose:);
+  SWIZZLE(TTWindow, setScriptFrontmost:);
+  SWIZZLE(TTWindow, setIsVisible:);
 
   SWIZZLE(TTTabView, draggingEntered:);
   SWIZZLE(TTTabView, draggingExited:);
