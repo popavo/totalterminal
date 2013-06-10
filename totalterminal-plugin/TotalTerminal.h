@@ -9,7 +9,8 @@
   NSWindow* background_;   // background window for quartz animations (will be nil if not enabled in settings!)
   NSStatusItem* statusItem_;
   NSMenu* statusMenu_;
-  IBOutlet NSWindow* settingsWindow;
+  IBOutlet NSView* _settingsView;
+  NSToolbarItem* _settingsToolbarItem;
   IBOutlet NSPanel* transparencyHelpPanel;
   IBOutlet WebView* infoLine;   // bottom info line on Visor preferences pane
   IBOutlet ModifierButtonImageView* modifierIcon1_;

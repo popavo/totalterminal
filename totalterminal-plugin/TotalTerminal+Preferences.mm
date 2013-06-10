@@ -190,7 +190,7 @@
     return;
   }
 
-  NSTabView* sourceTabView = [[[settingsWindow contentView] subviews] objectAtIndex:0];
+  NSTabView* sourceTabView = [[_settingsView subviews] objectAtIndex:0];
   if (!sourceTabView) {
     return;
   }
@@ -222,17 +222,8 @@
 
 -(void) storePreferencesPaneSize {
   // Store size of Visor preferences panel as it was set in IB
-  NSView* contentView = [settingsWindow contentView];
 
-  if (!contentView) {
-    return;     // safety net
-  }
-  NSArray* subviews = [contentView subviews];
-  if (!subviews || ([subviews count] <= 0)) {
-    return;     // safety net
-  }
-
-  NSTabView* sourceTabView = [subviews objectAtIndex:0];
+  NSTabView* sourceTabView = [[_settingsView subviews] objectAtIndex:0];
   if (!sourceTabView || ([[sourceTabView tabViewItems] count] <= 0)) {
     return;     // safety net
   }
@@ -263,9 +254,15 @@
 
 -(NSToolbarItem*) getVisorToolbarItem {
   LOG(@"getVisorToolbarItem");
-  NSToolbar* sourceToolbar = [settingsWindow toolbar];
-  NSToolbarItem* toolbarItem = [[sourceToolbar items] objectAtIndex:0];
-  return toolbarItem;
+  if (!_settingsToolbarItem) {
+    _settingsToolbarItem = [[[NSToolbarItem alloc] initWithItemIdentifier:@"Visor"] autorelease];
+    [_settingsToolbarItem setLabel:@"TotalTerminal"];
+    [_settingsToolbarItem setPaletteLabel:@"TotalTerminal"];
+    [_settingsToolbarItem setImage:[[NSBundle bundleForClass:[TotalTerminal class]] imageForResource:@"ToolbarIcon"]];
+    [_settingsToolbarItem setAutovalidates:YES];
+    [_settingsToolbarItem setEnabled:YES];
+  }
+  return _settingsToolbarItem;
 }
 
 -(void) rotateModifierHotKey {
