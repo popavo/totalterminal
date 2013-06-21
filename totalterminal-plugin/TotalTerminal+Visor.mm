@@ -14,6 +14,8 @@
 #import "TotalTerminal+Visor.h"
 #import "TotalTerminal+Shortcuts.h"
 
+#import "CGSPrivate.h"
+
 #undef PROJECT
 #define PROJECT Visor
 
@@ -430,6 +432,9 @@
 
 @end
 
+static void enteredFullscreenCallback(int data1, int data2, int data3, void* userParameter);
+static void exitedFullscreenCallback(int data1, int data2, int data3, void* userParameter);
+
 @implementation TotalTerminal (Visor)
 
 -(NSWindow*) window {
@@ -641,7 +646,92 @@
   return [screens objectAtIndex:screenIndex];
 }
 
+-(pid_t) dockPID {
+  NSArray* dockApps = [NSRunningApplication runningApplicationsWithBundleIdentifier:@"com.apple.dock"];
+  for (NSRunningApplication* dock in dockApps) {
+    if (!dock.isTerminated) {
+      LOG(@"Dock: %@ pid: %d", dock, dock.processIdentifier);
+      return dock.processIdentifier;
+    }
+  }
+}
+
+-(void) dumpCGSWindowList {
+  //#define DUMP_CGS_DEBUG
+#ifdef DUMP_CGS_DEBUG
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    CGSSetDebugOptions(kCGSDumpWindowInfo);
+    CGSSetDebugOptions(kCGSDumpConnectionInfo);
+    CGSSetDebugOptions(kCGSDumpWindowPlistInfo);
+    CGSSetDebugOptions(kCGSDumpWindowPlistInfo);
+  });
+#endif
+
+  CGSWorkspace workspace;
+  CGSGetWorkspace(_CGSDefaultConnection(), &workspace);
+
+  int numWorkspaceWindows;
+  CGSGetWorkspaceWindowCount(_CGSDefaultConnection(), workspace, &numWorkspaceWindows);
+
+  CGSWindow windowList[numWorkspaceWindows];
+  CGSGetWorkspaceWindowList(_CGSDefaultConnection(), workspace, numWorkspaceWindows, windowList, &numWorkspaceWindows);
+
+  for (int i = 0; i < numWorkspaceWindows; i++) {
+    CGSConnection targetCID;
+    pid_t targetPID;
+    CGWindowLevel level;
+    NSRect bounds;
+    int type;
+
+    CGSWindow windowID = windowList[i];
+
+    CGSGetWindowOwner(_CGSDefaultConnection(), windowID, &targetCID);
+    CGSConnectionGetPID(targetCID, &targetPID, _CGSDefaultConnection());
+
+    CGSGetWindowLevel(targetCID, windowID, &level);
+    CGSGetWindowBounds(_CGSDefaultConnection(), windowID, &bounds);
+    CGSGetWindowType(_CGSDefaultConnection(), windowID, &type);
+
+    LOG(@"PID: %d, window index: %d, window level: %d, type: %d window bounds: %@", targetPID, i, level, type, NSStringFromRect(bounds));
+  }
+}
+
+-(BOOL) previousAppIsFullscreen {
+  CGSWorkspace workspace;
+  CGSGetWorkspace(_CGSDefaultConnection(), &workspace);
+
+  int numWorkspaceWindows;
+  CGSGetWorkspaceWindowCount(_CGSDefaultConnection(), workspace, &numWorkspaceWindows);
+
+  CGSWindow windowList[numWorkspaceWindows];
+  CGSGetWorkspaceWindowList(_CGSDefaultConnection(), workspace, numWorkspaceWindows, windowList, &numWorkspaceWindows);
+
+  LOG(@"# of windows: %d", numWorkspaceWindows);
+
+  if (numWorkspaceWindows == 0) { // Sanity check
+    return NO;
+  }
+
+  CGSConnection firstWindowCID;
+  pid_t firstWindowOwnerPID;
+
+  CGSGetWindowOwner(_CGSDefaultConnection(), windowList[0], &firstWindowCID);
+  CGSConnectionGetPID(firstWindowCID, &firstWindowOwnerPID, _CGSDefaultConnection());
+  LOG(@"first PID: %d, previous PID: %d", firstWindowOwnerPID, previouslyActiveAppPID_);
+
+  // When in fullscreen, the fullscreen app's window is always first in the list
+  // When not in fullscreen, the window server's window is always first in the list
+  return (firstWindowOwnerPID == previouslyActiveAppPID_);
+}
+
 -(NSRect) menubarFrame:(NSScreen*)screen {
+
+  if ([self previousAppIsFullscreen]) {
+    LOG(@"Previous app is showing fullscreen");
+    return NSZeroRect;
+  }
+  
   NSArray* screens = [NSScreen screens];
 
   if (!screens) return NSZeroRect;
@@ -892,17 +982,20 @@
     // see: https://github.com/binaryage/totalterminal/issues/35
     isKey_ = true;
   }
-
+  LOG(@"previousActive: %d, current: %d", previouslyActiveAppPID_, [[NSRunningApplication currentApplication] processIdentifier]);
   [self updateStatusMenu];
+  if ([[[NSWorkspace sharedWorkspace] frontmostApplication] processIdentifier] == [[NSRunningApplication currentApplication] processIdentifier]) {
+    terminalWasActiveWhenVisorShown_ = YES;
+  }
   //[self storePreviouslyActiveApp];
   [self applyVisorPositioning];
-
-  
 
   [window_ update];
   [self slideWindows:1 fast:fast];
   [window_ invalidateShadow];
   [window_ update];
+
+
 }
 
 -(void) hideVisor:(BOOL)fast {
@@ -1448,3 +1541,16 @@ static const size_t kModifierEventTypeSpecSize = sizeof(kModifierEventTypeSpec) 
 }
 
 @end
+
+#undef PROJECT
+#define PROJECT Fullscreen
+
+static void enteredFullscreenCallback(int data1, int data2, int data3, void* userParameter) {
+  LOG(@"Entered fullscreen");
+  LOG(@"data1: %d, data2: %d, data3: %d", data1, data2, data3);
+}
+
+static void exitedFullscreenCallback(int data1, int data2, int data3, void* userParameter) {
+  LOG(@"Exited fullscreen");
+  LOG(@"data1: %d, data2: %d, data3: %d", data1, data2, data3);
+}

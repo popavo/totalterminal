@@ -87,7 +87,7 @@
     previouslyActiveAppPID_ = [previouslyActiveApp processIdentifier];
   } else {
     isFrontmost_ = NO;
-    previouslyActiveAppPID_ = 0;
+    previouslyActiveAppPID_ = activeApp.processIdentifier;
   }
 }
 
@@ -95,6 +95,10 @@
   AUTO_LOGGERF(@"pid=%d", previouslyActiveAppPID_);
   if (!previouslyActiveAppPID_) {
     // no previous app recorded
+    return;
+  }
+
+  if (terminalWasActiveWhenVisorShown_) {
     return;
   }
 

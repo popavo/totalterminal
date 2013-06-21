@@ -83,6 +83,8 @@ extern CGError CGSSetWindowTransform(const CGSConnection cid, const CGSWindow wi
 extern CGError CGSGetWindowTransform(const CGSConnection cid, const CGSWindow wid, CGAffineTransform* outTransform);
 extern CGError CGSSetWindowTransforms(const CGSConnection cid, CGSWindow* wids, CGAffineTransform* transform, int n);
 
+extern CGError CGSGetWindowType(const CGSConnection, CGSWindow wid, int* type);
+
 // Alpha
 extern CGError CGSSetWindowAlpha(const CGSConnection cid, const CGSWindow wid, float alpha);
 extern CGError CGSSetWindowListAlpha(const CGSConnection cid, CGSWindow* wids, int count, float alpha);
@@ -274,6 +276,21 @@ extern CGError CGSNewWindowWithOpaqueShape(CGSConnection cid,
     CGSWindowID* outWID);
 extern CGError CGSReleaseWindow(CGSConnection cid, CGSWindowID wid);
 extern CGContextRef CGWindowContextCreate(CGSConnection cid, CGSWindowID wid, void* unknown);
+
+#define kCGSWindowPropertyBPS "BPS"
+#define kCGSWindowPropertyFade "Fade"
+#define kCGSWindowPropertyName "Name"
+#define kCGSWindowPropertyRect "Rect"
+#define kCGSWindowPropertyShared "Shared"
+#define kCGSWindowPropertyModifier "Modifier"
+#define kCGSWindowPropertyCID "CID"
+#define kCGSWindowPropertyKB "KB"
+#define kCGSWindowPropertyType "Type"
+#define kCGSWindowPropertyVisible "Visible"
+#define kCGSWindowPropertyLevel "Level"
+#define kCGSWindowPropertyWID "WID"
+#define kCGSWindowPropertyBacking "Backing"
+#define kCGSWindowPropertyPID "PID"
 
 // Values
 extern int CGSIntegerValue(CGSValue intVal);

@@ -125,7 +125,7 @@
   if (minorVersion >= 7) {
     [[NSWorkspace sharedWorkspace] addObserver:self
                                     forKeyPath:@"frontmostApplication"
-                                       options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld
+                                       options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionInitial
                                        context:nil];
   } else {
     universalTimer_ = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(universalTimerFired:) userInfo:nil repeats:YES];
