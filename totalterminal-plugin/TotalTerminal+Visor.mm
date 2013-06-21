@@ -432,9 +432,6 @@
 
 @end
 
-static void enteredFullscreenCallback(int data1, int data2, int data3, void* userParameter);
-static void exitedFullscreenCallback(int data1, int data2, int data3, void* userParameter);
-
 @implementation TotalTerminal (Visor)
 
 -(NSWindow*) window {
@@ -1541,16 +1538,3 @@ static const size_t kModifierEventTypeSpecSize = sizeof(kModifierEventTypeSpec) 
 }
 
 @end
-
-#undef PROJECT
-#define PROJECT Fullscreen
-
-static void enteredFullscreenCallback(int data1, int data2, int data3, void* userParameter) {
-  LOG(@"Entered fullscreen");
-  LOG(@"data1: %d, data2: %d, data3: %d", data1, data2, data3);
-}
-
-static void exitedFullscreenCallback(int data1, int data2, int data3, void* userParameter) {
-  LOG(@"Exited fullscreen");
-  LOG(@"data1: %d, data2: %d, data3: %d", data1, data2, data3);
-}
